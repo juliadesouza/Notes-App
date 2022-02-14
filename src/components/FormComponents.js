@@ -74,8 +74,14 @@ const InputDate = ({ date, setDate }) => {
     )
 }
 
+/* 
+    UseRef: manter uma variavel mutavel
+    useRef pode ser usado para guardar essa referência, que pode ser acessada em 
+    outro momento para mudar o estado desse componente sem precisar renderizar 
+    novamente.
+*/ 
 const InputShoppingList = ({ item, setItem, numItems, setNumItems, itemList, setItemList }) => {
-    const refItems = useRef([item])
+    const refItems = useRef([item]) 
 
     const setItemValue = (i, itemUpdated) => {
         const items = refItems.current
@@ -117,7 +123,7 @@ const InputShoppingList = ({ item, setItem, numItems, setNumItems, itemList, set
         <View style={styles.component}>
             <Pressable onPress={addItem}>
                 {inputItemList}
-                <Text style={styles.btnAdicionarItem}>Adicionar item</Text>
+                <Text style={styles.btnAddItem}>Adicionar item</Text>
             </Pressable>
         </View>
     )
@@ -250,7 +256,7 @@ const styles = StyleSheet.create({
         height: 150,
         textAlignVertical: 'top'
     },
-    btnAdicionarItem: {
+    btnAddItem: {
         marginTop: 10,
         color: '#0F62FE',
         alignSelf: "flex-start"
