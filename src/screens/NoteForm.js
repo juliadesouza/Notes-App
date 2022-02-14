@@ -18,8 +18,7 @@ export default ({ navigation, route }) => {
     const [tagList, setTagList] = useState([]) // a list of all tags added
 
     useEffect(() => {
-        return navigation.addListener('willFocus', () => {
-            console.warn("voltei")
+        return navigation.addListener('focus', () => {
             setName("")
             setDescription("")
             setPriority("Urgente")
@@ -51,48 +50,14 @@ export default ({ navigation, route }) => {
             </ScrollView>
             <View style={styles.footer}>
                 <TouchableOpacity onPress={async () => {
-                    if (name.trim() != "") {
-                        const note = {
-                            id: new Date().getTime(),
-                            noteName: name, // ok
-                            noteDescription: description, // ok
-                            notePriority: priority, // ??
-                            noteDate: date, // ??
-                            noteShoppingList: itemList,
-                            noteDoc: file, // ok
-                            noteColor: color, // ok
-                            noteTags: tagList // ok
-                        }
-                        DataHandler.storeNote(note)
-                            .then(response => showAlertSuccessful(note, navigation))
-                    } else {
-                        console.warn("O campo NOME é obrigatório.")
-                    }
+                    createNote(name, description, priority, date, itemList, file, color, tagList, navigation)
                 }}>
-                    <Text style={styles.btnCriarNota}>Criar nota</Text>
+                    <Text style={styles.btnCreateNote}>Criar nota</Text>
                 </TouchableOpacity>
             </View>
         </View>
     )
 }
-
-const showAlertSuccessful = (note, navigation) =>
-    Alert.alert(
-        "",
-        "Nota criada com sucesso!",
-        [
-            {
-                text: "VER NOTA",
-                onPress: () => navigation.navigate("NoteView", note),
-                style: "defaul",
-            },
-            {
-                text: "CRIAR OUTRA",
-                onPress: () => navigation.navigate("NoteForm"),
-                style: "defaul",
-            },
-        ],
-    );
 
 const setNavigationOptions = (navigation, route) => {
     React.useLayoutEffect(() => {
@@ -112,8 +77,52 @@ const setNavigationOptions = (navigation, route) => {
                 )
             }
         });
-    }, [navigation, route]);
+    });
 }
+
+const createNote = (name, description, priority, date, itemList, file, color, tagList, navigation) => {
+    if (name.trim() != "") {
+        const note = {
+            id: new Date().getTime(),
+            noteName: name,
+            noteDescription: description,
+            notePriority: priority,
+            noteDate: date,
+            noteShoppingList: itemList,
+            noteDoc: file,
+            noteColor: color,
+            noteTags: tagList
+        }
+        DataHandler.storeNote(note)
+            .then(response => showAlertCreateSuccessful(note, navigation))
+    } else {
+        console.warn("O campo NOME é obrigatório.")
+    }
+}
+
+const showAlertCreateSuccessful = (note, navigation) =>
+    Alert.alert(
+        "",
+        "Nota criada com sucesso!",
+        [
+            {
+                text: "VER NOTA",
+                onPress: () => navigation.navigate("NoteView", note),
+                style: "defaul",
+            },
+            {
+                text: "CRIAR OUTRA",
+                onPress: () => {
+                    navigation.goBack()
+                    navigation.push("NoteForm")
+                }
+                ,
+                style: "defaul",
+            },
+        ],
+    );
+
+
 
 const styles = StyleSheet.create({
     container: {
@@ -132,7 +141,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 48
     },
-    btnCriarNota: {
+    btnCreateNote: {
         color: 'white',
         fontSize: 16
     }

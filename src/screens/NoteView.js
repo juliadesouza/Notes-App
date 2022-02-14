@@ -1,11 +1,11 @@
 import React from 'react'
-import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView, ProgressViewIOSComponent, Alert } from 'react-native'
-import Icon from 'react-native-vector-icons/Ionicons'
+import { View, StyleSheet, ScrollView, Alert } from 'react-native'
 import { InputName, InputDescription, SelectPriority, InputDate, InputShoppingList, UploadedPhotoAndFile, SelectColor, InputTags } from '../components/ViewComponents'
+import Icon from 'react-native-vector-icons/Ionicons'
 import DataHandler from '../data/DataHandler'
 
 export default ({ navigation, route }) => {
-    const { id, noteName, noteDescription, notePriority, noteDate, noteShoppingList, noteDoc, noteColor, noteTags } = route.params
+    const { noteName, noteDescription, notePriority, noteDate, noteShoppingList, noteDoc, noteColor, noteTags } = route.params
     setNavigationOptions(navigation, route)
 
     return (
@@ -35,7 +35,7 @@ const setNavigationOptions = (navigation, route) => {
                             name='trash-outline'
                             backgroundColor="transparent"
                             underlayColor="transparent"
-                            onPress={() => showAlertDelete(route.params, navigation)}
+                            onPress={() => showAlertConfirmDelete(route.params, navigation)}
                         />
                         <Icon.Button
                             name='pencil'
@@ -47,10 +47,10 @@ const setNavigationOptions = (navigation, route) => {
                 )
             },
         });
-    }, [navigation, route]);
+    });
 }
 
-const showAlertDelete = (note, navigation) =>
+const showAlertConfirmDelete = (note, navigation) =>
     Alert.alert(
         "",
         "Tem certeza que deseja excluir esta nota? Essa ação não poderá ser desfeita.",
@@ -64,14 +64,14 @@ const showAlertDelete = (note, navigation) =>
                 text: "EXCLUIR",
                 onPress: () => {
                     DataHandler.deleteNote(note.id)
-                        .then(response => showAlertDeletedSucessfull(note, navigation))
+                        .then(response => showAlertDeleteSuccessfull(note, navigation))
                 }
             },
         ],
         { cancelable: false }
     );
 
-const showAlertDeletedSucessfull = (note, navigation) =>
+const showAlertDeleteSuccessfull = (note, navigation) =>
     Alert.alert(
         "",
         "Nota excluída com sucesso",

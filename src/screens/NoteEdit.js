@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState } from 'react'
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native'
-import Icon from 'react-native-vector-icons/Ionicons'
 import { InputName, InputDescription, SelectPriority, InputDate, InputShoppingList, UploadPhotoAndFile, SelectColor, InputTags } from '../components/FormComponents'
+import Icon from 'react-native-vector-icons/Ionicons'
 import DataHandler from '../data/DataHandler'
 
 export default ({ navigation, route }) => {
@@ -36,32 +36,63 @@ export default ({ navigation, route }) => {
             </ScrollView>
             <View style={styles.footer}>
                 <TouchableOpacity onPress={async () => {
-                    if (name.trim() != "") {
-                        const note = {
-                            id: id,
-                            noteName: name, // ok
-                            noteDescription: description, // ok
-                            notePriority: priority, // ??
-                            noteDate: date, // ??
-                            noteShoppingList: itemList,
-                            noteDoc: file, // ok
-                            noteColor: color, // ok
-                            noteTags: tagList // ok
-                        }
-                        DataHandler.updateNote(note, id)
-                            .then(response => showAlertSuccessful(note, navigation))
-                    } else {
-                        console.warn("O campo NOME é obrigatório.")
-                    }
+                    update(id, name, description, priority, date, itemList, file, color, tagList, navigation)
                 }}>
-                    <Text style={styles.btnSalvar}>Salvar</Text>
+                    <Text style={styles.btnSave}>Salvar</Text>
                 </TouchableOpacity>
             </View>
         </View>
     )
 }
 
-const showAlertSuccessful = (note, navigation) =>
+const setNavigationOptions = (navigation, route) => {
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            title: "Editar nota",
+            headerBackVisible: false,
+            headerRight: () => {
+                return (
+                    <View style={styles.menubarIcons}>
+                        <Icon.Button
+                            name='trash-outline'
+                            backgroundColor="transparent"
+                            underlayColor="transparent"
+                            onPress={() => showAlertConfirmDelete(route.params, navigation)}
+                        />
+                        <Icon.Button
+                            name='close-outline'
+                            backgroundColor="transparent"
+                            underlayColor="transparent"
+                            onPress={() => navigation.goBack()}
+                        />
+                    </View>
+                )
+            }
+        });
+    });
+}
+
+const update = (id, name, description, priority, date, itemList, file, color, tagList, navigation) => {
+    if (name.trim() != "") {
+        const note = {
+            id: id,
+            noteName: name,
+            noteDescription: description,
+            notePriority: priority,
+            noteDate: date,
+            noteShoppingList: itemList,
+            noteDoc: file,
+            noteColor: color,
+            noteTags: tagList
+        }
+        DataHandler.updateNote(note, id)
+            .then(response => showAlertUpdateSuccessful(note, navigation))
+    } else {
+        console.warn("O campo NOME é obrigatório.")
+    }
+}
+
+const showAlertUpdateSuccessful = (note, navigation) =>
     Alert.alert(
         "",
         "Nota atualizada com sucesso!",
@@ -79,34 +110,8 @@ const showAlertSuccessful = (note, navigation) =>
         ],
     );
 
-const setNavigationOptions = (navigation, route) => {
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-            title: "Editar nota",
-            headerBackVisible: false,
-            headerRight: () => {
-                return (
-                    <View style={styles.menubarIcons}>
-                        <Icon.Button
-                            name='trash-outline'
-                            backgroundColor="transparent"
-                            underlayColor="transparent"
-                            onPress={() => showAlertDelete(route.params, navigation)}
-                        />
-                        <Icon.Button
-                            name='close-outline'
-                            backgroundColor="transparent"
-                            underlayColor="transparent"
-                            onPress={() => navigation.goBack()}
-                        />
-                    </View>
-                )
-            }
-        });
-    }, [navigation, route]);
-}
 
-const showAlertDelete = (note, navigation) =>
+const showAlertConfirmDelete = (note, navigation) =>
     Alert.alert(
         "",
         "Tem certeza que deseja excluir esta nota? Essa ação não poderá ser desfeita.",
@@ -120,14 +125,14 @@ const showAlertDelete = (note, navigation) =>
                 text: "EXCLUIR",
                 onPress: () => {
                     DataHandler.deleteNote(note.id)
-                        .then(response => showAlertDeletedSucessfull(note, navigation))
+                        .then(response => showAlertDeleteSuccessfull(note, navigation))
                 }
             },
         ],
         { cancelable: false }
     );
 
-const showAlertDeletedSucessfull = (note, navigation) =>
+const showAlertDeleteSuccessfull = (note, navigation) =>
     Alert.alert(
         "",
         "Nota excluída com sucesso",
@@ -158,7 +163,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 48
     },
-    btnSalvar: {
+    btnSave: {
         color: 'white',
         fontSize: 16
     },
