@@ -79,9 +79,9 @@ const InputDate = ({ date, setDate }) => {
     useRef pode ser usado para guardar essa referência, que pode ser acessada em 
     outro momento para mudar o estado desse componente sem precisar renderizar 
     novamente.
-*/ 
+*/
 const InputShoppingList = ({ item, setItem, numItems, setNumItems, itemList, setItemList }) => {
-    const refItems = useRef([item]) 
+    const refItems = useRef([item])
 
     const setItemValue = (i, itemUpdated) => {
         const items = refItems.current
@@ -121,6 +121,7 @@ const InputShoppingList = ({ item, setItem, numItems, setNumItems, itemList, set
 
     return (
         <View style={styles.component}>
+            <Text style={styles.label}>Lista de compras</Text>
             <Pressable onPress={addItem}>
                 {inputItemList}
                 <Text style={styles.btnAddItem}>Adicionar item</Text>
