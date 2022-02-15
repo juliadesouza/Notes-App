@@ -18,7 +18,7 @@ const storeNote = async (newNote) => {
 
 const getNotes = async () => {
     try {
-        return AsyncStorage.getItem('notes')
+        return await AsyncStorage.getItem('notes')
             .then(response => {
                 if (response)
                     return Promise.resolve(JSON.parse(response));
@@ -52,11 +52,26 @@ const updateNote = async (newNote, id) => {
     }
 }
 
+const getNotesBySearch = async (txt) => {
+    try {
+        let savedNotes = await getNotes()
+        let output = savedNotes.filter((note) => {
+            if (note.noteName.toUpperCase().includes(txt.toUpperCase()) ||
+                note.noteDescription.toUpperCase().includes(txt.toUpperCase())) {
+                return note
+            }
+        })
 
+        return output;
+    } catch (e) {
+        console.warn(`Erro ao buscar nota: ${e}`)
+    }
+}
 
 module.exports = {
     storeNote,
     getNotes,
     deleteNote,
-    updateNote
+    updateNote,
+    getNotesBySearch
 }

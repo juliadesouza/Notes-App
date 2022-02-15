@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, Image, TextInput } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import DataHandler from '../data/DataHandler'
 import MasonryList from '@react-native-seoul/masonry-list'
 import { InputShoppingList } from '../components/ViewComponents'
+import SearchBar from '../components/SearchBar'
 
 export default ({ navigation, route }) => {
 
     setNavigationOptions(navigation)
 
     const [notes, setNotes] = useState([])
+    const [txtSearch, setTxtSearch] = useState('')
 
     useEffect(() => {
         return navigation.addListener('focus', () => {
@@ -58,6 +60,16 @@ export default ({ navigation, route }) => {
     return (
         <View style={styles.container}>
             <View style={styles.body}>
+                <View style={{ backgroundColor: "#F8F8F8", borderWidth: 1, borderColor: '#d9d9d9', borderRadius: 10, paddingStart: 10, paddingEnd: 10 }}>
+                    <TextInput
+                        value={txtSearch}
+                        onChangeText={(txt) => {
+                            setTxtSearch(txt)
+                            DataHandler.getNotesBySearch(txt).then((value) => setNotes(value))
+                        }}
+                        placeholder="Buscar"
+                    />
+                </View>
                 {notes.length < 1 ? showDefaultMessage() : showNotes(notes, renderItem)}
             </View>
             <View style={styles.footer}>
@@ -80,6 +92,7 @@ const setNavigationOptions = (navigation) => {
                             name='search'
                             backgroundColor="transparent"
                             underlayColor="transparent"
+
                         />
                         <Icon.Button
                             name='add'
@@ -93,7 +106,6 @@ const setNavigationOptions = (navigation) => {
         });
     });
 }
-
 
 const styles = StyleSheet.create({
     container: {
