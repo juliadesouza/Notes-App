@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, ScrollView, Alert } from 'react-native'
-import { InputName, InputDescription, SelectPriority, InputDate, InputShoppingList, UploadedPhotoAndFile, SelectColor, InputTags } from '../components/ViewComponents'
+import { ViewName, ViewDescription, ViewPriority, ViewDate, ViewShoppingList, ViewPhotoAndFile, ViewColor, ViewTags } from '../components/ViewComponents'
 import Icon from 'react-native-vector-icons/Ionicons'
 import DataHandler from '../data/DataHandler'
 
@@ -11,14 +11,14 @@ export default ({ navigation, route }) => {
     return (
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.body}>
-                <InputName name={noteName} />
-                <InputDescription description={noteDescription} />
-                <SelectPriority priority={notePriority} />
-                <InputDate date={noteDate} />
-                <InputShoppingList shoppingList={noteShoppingList} visible={true} flex={9} />
-                <UploadedPhotoAndFile file={noteDoc} />
-                <SelectColor color={noteColor} />
-                <InputTags tags={noteTags} />
+                <ViewName name={noteName} />
+                <ViewDescription description={noteDescription} />
+                <ViewPriority priority={notePriority} />
+                <ViewDate date={noteDate} />
+                <ViewShoppingList shoppingList={noteShoppingList} visible={true} flex={9} />
+                <ViewPhotoAndFile file={noteDoc} />
+                <ViewColor color={noteColor} />
+                <ViewTags tags={noteTags} />
             </ScrollView>
         </View>
     )

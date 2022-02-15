@@ -3,7 +3,7 @@ import { Text, TextInput, View, StyleSheet, Pressable, TouchableOpacity } from '
 import { Picker } from '@react-native-picker/picker'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const InputName = ({ name }) => {
+const ViewName = ({ name }) => {
     return (
         <View style={styles.component}>
             <Text style={styles.label}>NOME</Text>
@@ -12,7 +12,7 @@ const InputName = ({ name }) => {
     )
 }
 
-const InputDescription = ({ description }) => {
+const ViewDescription = ({ description }) => {
     return (
         <View style={styles.component}>
             <Text style={styles.label}>DESCRIÇÃO</Text>
@@ -21,7 +21,7 @@ const InputDescription = ({ description }) => {
     )
 }
 
-const SelectPriority = ({ priority }) => {
+const ViewPriority = ({ priority }) => {
     return (
         <View style={styles.component}>
             <Text style={styles.label}>PRIORIDADE</Text>
@@ -36,7 +36,7 @@ const SelectPriority = ({ priority }) => {
     )
 }
 
-const InputDate = ({ date }) => {
+const ViewDate = ({ date }) => {
     return (
         <View style={styles.component}>
             <Text style={styles.label}>DATA</Text>
@@ -48,7 +48,10 @@ const InputDate = ({ date }) => {
     )
 }
 
-const InputShoppingList = ({ shoppingList, visible, flex }) => {
+// Esse input é utilizado tanto pela NoteList, para exibir a lista de compras no card de cada note, 
+// quantos pela ListView, para exibir todos os dados da note clicada. Como nao sao exatamente iguais as 
+// exibico
+const ViewShoppingList = ({ shoppingList, visible, flex }) => {
     return (
         <View style={visible ? styles.component : null}>
             {visible ? <Text style={styles.label}>LISTA DE COMPRAS</Text> : null}
@@ -67,7 +70,7 @@ const InputShoppingList = ({ shoppingList, visible, flex }) => {
     )
 }
 
-const UploadedPhotoAndFile = ({ file }) => {
+const ViewPhotoAndFile = ({ file }) => {
     return (
         <View style={styles.component}>
             <Text style={styles.label}>ARQUIVO/IMAGEM</Text>
@@ -76,7 +79,7 @@ const UploadedPhotoAndFile = ({ file }) => {
     )
 }
 
-const SelectColor = ({ color }) => {
+const ViewColor = ({ color }) => {
     let colorName
 
     if (color === "#FFF3F3") colorName = 'Rosa'
@@ -100,7 +103,7 @@ const SelectColor = ({ color }) => {
 }
 
 
-const InputTags = ({ tags }) => {
+const ViewTags = ({ tags }) => {
 
     return (
         <View style={styles.component}>
@@ -118,7 +121,7 @@ const InputTags = ({ tags }) => {
     )
 }
 
-export { InputName, InputDescription, SelectPriority, InputDate, InputShoppingList, UploadedPhotoAndFile, SelectColor, InputTags }
+export { ViewName, ViewDescription, ViewPriority, ViewDate, ViewShoppingList, ViewPhotoAndFile, ViewColor, ViewTags }
 
 const styles = StyleSheet.create({
     component: {

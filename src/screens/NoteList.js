@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, TouchableOpacity, Image, TextInput } from 'reac
 import Icon from 'react-native-vector-icons/Ionicons'
 import DataHandler from '../data/DataHandler'
 import MasonryList from '@react-native-seoul/masonry-list'
-import { InputShoppingList } from '../components/ViewComponents'
+import { ViewShoppingList } from '../components/ViewComponents'
 
 export default ({ navigation, route }) => {
     const [notes, setNotes] = useState([])
@@ -50,7 +50,7 @@ export default ({ navigation, route }) => {
                 <View style={[styles.noteCard, { backgroundColor: noteColor }]}>
                     <Text style={styles.noteTitle}>{noteName}</Text>
                     {noteDescription != "" || noteDescription.length > 0 ? <Text style={styles.noteDescription}>{noteDescription}</Text> : null}
-                    {noteShoppingList.length > 0 ? <InputShoppingList shoppingList={noteShoppingList} visible={false} flex={4} /> : null}
+                    {noteShoppingList.length > 0 ? <ViewShoppingList shoppingList={noteShoppingList} visible={false} flex={4} /> : null}
                 </View>
             </TouchableOpacity>
         )
@@ -60,7 +60,6 @@ export default ({ navigation, route }) => {
         <View style={styles.container}>
             <View style={styles.body}>
                 {showSearchBar ? <SearchBar txtSearch={txtSearch} setTxtSearch={setTxtSearch} setNotes={setNotes} /> : null}
-
                 {notes.length < 1 && !showSearchBar ? showDefaultMessage() : showNotes(notes, renderItem)}
             </View>
             <View style={styles.footer}>
